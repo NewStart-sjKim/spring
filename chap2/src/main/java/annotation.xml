@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /chap1/src/main/java/annotation.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd">
+ <!-- 
+ 	gdu.kr.chap2 패키지의 클래스 중 어노테이션이 @Component인 클래스를 객체를 생성
+ 	소문자로 시작하는 클래스명이 객체의 이름
+ 	class Executor 클래스의 객체 => executor의 이름으로 저장 
+  -->
+ <context:component-scan base-package="gdu.kr.chap2"/>
+ <bean id="camera1" class="gdu.kr.chap2.Camera" p:number="1"/>
+ <bean id="camera2" class="gdu.kr.chap2.Camera" p:number="2"/>
+ <bean id="camera3" class="gdu.kr.chap2.Camera" p:number="3"/>
+ <bean id="camera4" class="gdu.kr.chap2.Camera" p:number="4"/>
+ <bean id="windowSensor" class="gdu.kr.chap2.InfraredRaySensor">
+ <!-- constructor-arg : 생성자를 통해 값을 주입 -->
+ 	<constructor-arg value="창센서"/>
+ 	<qualifier value="intrusionDetection"/>
+ </bean>
+ <bean id="doorSensor" class="gdu.kr.chap2.InfraredRaySensor">
+ 	<constructor-arg value="현관센서"/>
+ 	<qualifier value="intrusionDetection"/>
+ </bean>
+ <bean id="lampSensor" class="gdu.kr.chap2.InfraredRaySensor">
+ 	<constructor-arg value="전등센서"/>
+ 	<qualifier value="intrusionDetection"/>
+ </bean>
+ <bean id="displayMode" class="gdu.kr.chap2.DisplayMode" p:type="GRID"/>
+ <!-- p:aaa => setProperty(aaa) Project 클래스의 setBindir("bin") -->
+ <bean id="project" class="gdu.kr.chap2.Project" p:bindir="bin" p:classpath="src/" p:build-ref="runner">
+ 	<property name="srcdirs">
+ 		<list>
+ 			<value>src/</value>
+ 			<value>srcResources/</value>
+ 		</list>
+ 	</property>
+ </bean>
+ <bean id="runner" class="gdu.kr.chap2.BuildRunner" p:path="c:/setup/"/>
+</beans>

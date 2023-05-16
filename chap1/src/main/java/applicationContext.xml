@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- /chap1/src/main/java/applicationContext.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd">
+ <!-- 
+	bean : 객체
+	gdu.kr.chap1.Greeter 객체를 greeter 이름으로 컨테이너에 저장
+ -->
+ <bean id="greeter" class="gdu.kr.chap1.Greeter">
+ <!-- 
+ 	property : setProperty 이름
+ 	setFormat("$s을 배웁니다.")
+  -->
+ 	<property name="format" value="%s을 배웁니다."/>
+ </bean>
+ <bean id="message" class="gdu.kr.chap1.MessageEn"/>
+</beans>
