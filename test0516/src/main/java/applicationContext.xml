@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd
+ http://www.springframework.org/schema/context
+ http://www.springframework.org/schema/context/spring-context.xsd
+ http://www.springframework.org/schema/aop
+ http://www.springframework.org/schema/aop/spring-aop.xsd">
+ <!-- 
+ 	gdu.kr.chap2 패키지의 클래스 중 어노테이션이 @Component인 클래스를 객체를 생성
+ 	소문자로 시작하는 클래스명이 객체의 이름
+ 	class Executor 클래스의 객체 => executor의 이름으로 저장 
+  -->
+  <!-- <bean id="write" class="gdu.kr.test0515.WriteImpl">
+  	<constructor-arg><ref bean="articleDao"/></constructor-arg>
+  </bean> -->
+  <bean id="writeArticleService" class="test.WriteArticleServiceImpl">
+ 	<constructor-arg>
+ 		<ref bean="articleDao"/>
+ 	</constructor-arg>
+ </bean>
+  <!-- <bean id="writeArticleService" class="test.MariadbArticleDao"/> -->
+  <!--  <bean id="articleDao" class="gdu.kr.test0515.MariaDBArticleDao"/> -->
+  <bean id="articleDao" class="test.MariadbArticleDao"/>
+<context:component-scan base-package="test"/>
+</beans>
