@@ -5,6 +5,7 @@ public class LoggingAdvice {
 		System.out.println("[LA]메서드 실행 전 전처리 수행 기능");
 	}
 	public void afterReturning(Object ret) {// ret : 핵심메서드의 리턴값
+		//ret : new Article(1) 리턴
 		System.out.println("[LA]메서드 정상 처리 후 수행 함. ret=" + ret);
 	}
 	public void afterThrowing(Throwable ex) { //ex : 핵심메서드에서 발생된 예외 객체

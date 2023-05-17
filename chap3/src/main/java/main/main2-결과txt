@@ -1,0 +1,33 @@
+[ACA] cache before 실행                 => xml.ArticleCacheAdvice.cache() 메서드
+[LA]메서드 실행 전 전처리 수행 기능 =>LoggingAdvice.before() 메서드
+getArticleAndReadCnt(1) 호출         =>ReadArticleServiceImpl.getArticleAndReadCnt(1) 메서드
+[LA]메서드 정상 처리 후 수행 함. ret=xml.Article@3e27ba32 =>LoggingAdvice.afterReturning() 메서드
+[LA]메서드 실행 후 수행함      => LoggingAdvice.afterFinally() 메서드
+[ACA] cache after 실행         => xml.ArticleCacheAdvice.cache() 메서드
+[ACA] cache에서 Article[1] 추가함 => xml.ArticleCacheAdvice.cache() 메서드
+[main] a1 : xml.Article@3e27ba32   => main 메서드
+[ACA] cache before 실행         => xml.ArticleCacheAdvice.cache() 메서드
+[ACA] cache에서 Article[1] 가져옴  => xml.ArticleCacheAdvice.cache() 메서드
+[main] a1==a2 : true       => main 메서드
+[ACA] cache before 실행          => xml.ArticleCacheAdvice.cache() 메서드
+[LA]메서드 실행 전 전처리 수행 기능 =>LoggingAdvice.before() 메서드
+getArticleAndReadCnt(0) 호출   =>ReadArticleServiceImpl.getArticleAndReadCnt(0) 메서드
+[LA]메서드 예외 발생 후 수행함. 발생 예외=id는 0이안됨 =>LoggingAdvice.afterThrowing() 메서드
+[LA]메서드 실행 후 수행함           => LoggingAdvice.afterFinally() 메서드
+[main] id는 0이안됨                   => main 메서드
+
+ UpdateMemberInfoTraceAspect 연습 => main 메서드
+[LA]메서드 실행 전 전처리 수행 기능     => LoggingAdvice.before() 메서드
+MemberService.regist() 메서드 실행  => MemberService.regist() 메서드
+[LA]메서드 정상 처리 후 수행 함. ret=null => LoggingAdvice.afterReturning() 메서드
+[LA]메서드 실행 후 수행함                => LoggingAdvice.afterFinally() 메서드
+[LA]메서드 실행 전 전처리 수행 기능   =>  LoggingAdvice.before() 메서드
+MemberService.update() 메서드 실행 => MemberService.update(String, UpdateInfo)
+[LA]메서드 정상 처리 후 수행 함. ret=true => LoggingAdvice.afterReturning() 메서드
+[LA]메서드 실행 후 수행함                => LoggingAdvice.afterFinally() 메서드
+[TA] 정보 수정 결과 : true,대상회원:hong,수정정보:xml.UpdateInfo@52815fa3 
+                                    =>UpdateTraceAdvice.traceReturn() 메서드 
+[LA]메서드 실행 전 전처리 수행 기능  =>  LoggingAdvice.before() 메서드
+MemberService.delete() 메서드 실행 =>MemberService.delete(String, String) 메서드
+[LA]메서드 정상 처리 후 수행 함. ret=false => LoggingAdvice.afterReturning() 메서드
+[LA]메서드 실행 후 수행함             => LoggingAdvice.afterFinally() 메서드

@@ -13,6 +13,7 @@
  http://www.springframework.org/schema/aop/spring-aop.xsd">
  	<bean id="loggingAdvice" class="xml.LoggingAdvice"/>
  	<bean id="cacheAdvice" class="xml.ArticleCacheAdvice"/>
+ 	<bean id="traceAdvice" class="xml.UpdateTraceAdvice"/>
  	<aop:config>
  		<aop:aspect id="loggingAspect" ref="loggingAdvice" order="3">
  			<aop:pointcut id="publicMethod" expression="execution(public * xml..*(..))"/>
@@ -25,6 +26,19 @@
  		</aop:aspect>
  		<aop:aspect id="cacheAspect" ref="cacheAdvice" order="2">
  			<aop:around method="cache" pointcut="execution(public * *..ReadArticleService.*(..))"/>
+ 		</aop:aspect>
+ 		<!-- 
+ 			pointcut=args(id,info) : 매개변수목록이 id와 info인 메서드 핵심메서드로 설정
+ 									 매개변수 (String, UpdateInfo)
+ 			returning="ret" : 리턴값
+ 			arg-names="ret,id,info" : traceReturn 메서드의 매개변수 목록
+ 								(Object result,String id, Updateinfo info)
+ 								result : ret 값
+ 								id     : id => String
+ 								info   : info => UpdateInfo
+ 		 -->
+ 		<aop:aspect id="traceAspect" ref="traceAdvice" order="1">
+ 			<aop:after-returning method="traceReturn" pointcut="args(id,info)" returning="ret" arg-names="ret,id,info"/>
  		</aop:aspect>
  	</aop:config>
  </beans>
