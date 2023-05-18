@@ -12,8 +12,9 @@ import org.springframework.stereotype.Component;
 @Aspect	   //AOP 클래스.
 @Order(3)  //순서지정
 public class LoggingAspect {
-	//pointcut 설정 : annotation 패키지에 속한 클래스의 모든 public 메서드
-	final String publicMethod = "execution(public * test..*(..))";
+	//test.pointcut 클래스의 모든 public 메서드만 가능하도록 수정 
+	//final String publicMethod = "execution(public * test..*(..))";
+	final String publicMethod = "execution(public * test.Project.*(..))";
 	@Before(publicMethod) 
 	public void before() {
 		System.out.println("[LA] Before 메서드 실행 전 실행");

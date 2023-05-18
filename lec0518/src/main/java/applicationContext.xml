@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!-- /chap1/src/main/java/applicationContext.xml
+   객체를 생성하기 위한 설정 파일 xml
+   => 어노테이션 방식으로 변경
+   => 자바 Configuration 방식으로 변경
+ -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+ xsi:schemaLocation="http://www.springframework.org/schema/beans
+ http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="monitor" class="chap02.SystemMonitor"
+		p:periodTime="10" p:sender-ref="smsSender" />
+	<bean id="smsSender" class="chap02.SmsSender" />
+</beans>
