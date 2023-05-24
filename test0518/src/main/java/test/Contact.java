@@ -1,7 +1,13 @@
 package test;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Contact {
+	@Value("1111-2222")
 	private String tel;
+	@Value("1111-3333")
 	private String fax;
 	public Contact() {}
 	public Contact(String tel, String fax) {

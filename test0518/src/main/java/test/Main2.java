@@ -3,13 +3,10 @@ package test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
-public class Main1 {
+public class Main2 {
 	public static void main(String[] args) {
-		/*
-		 * ctx : user1(c),user2(c), contact
-		 */
 		AbstractApplicationContext ctx = 
-				new AnnotationConfigApplicationContext(AppConfig.class); 
+				new AnnotationConfigApplicationContext(AppConfig2.class); 
 		User user1 = ctx.getBean("user1", User.class);
 		System.out.println(user1.getId());
 		System.out.println(user1.getContact().getTel());
@@ -20,8 +17,8 @@ public class Main1 {
 		System.out.println(user2.getContact().getTel());
 		System.out.println(user2.getContact().getFax());
 		
+		System.out.println("user1==user2" + (user1==user2));
 	}
-
 }
 //1. AppConfig에서 객체 생성
 //2. 어노테이션을 이용한 방식 객체 생성

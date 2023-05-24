@@ -17,9 +17,10 @@
  <!-- js, css, html : 웹에서 기본제공되는 파일은 spring에서 제외시킴. -->
  <mvc:default-servlet-handler/>
  <!-- @Component,@Controller, @Service, @Repository => 객체화 -->
- <context:component-scan base-package="controller,logic,dao"/>
- <!-- mvc 관련 어노테이션 적용 -->
- <mvc:annotation-driven/>
+ <context:component-scan base-package="controller,logic,dao,aop"/>
+ 
+ <mvc:annotation-driven/> <!-- mvc 관련 어노테이션 적용 -->
+ <aop:aspectj-autoproxy/> <!-- AOP 관련 어노테이션 적용 -->
  <!-- 
  	View 결정자 : jsp 페이지의 위치 지정
  	list/list : /WEB-INF/view/item/list.jsp => itemList 데이터 전달
@@ -33,6 +34,35 @@
  	</property>
  	<property name="suffix">
  		<value>.jsp</value>
+ 	</property>
+ </bean>
+
+<!-- 파일 업로드 설정 -->
+ <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" 
+ 		p:maxUploadSize="104854600" p:maxInMemorySize="10485460"/>
+
+ <!-- 예외처리 설정 : 예외 발생시 처리를 위한 설정. -->
+ <bean id="exceptionHandler" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+ 	<property name="exceptionMappings"> <!-- 처리가능한 예외 목록 -->
+ 	<!-- exception.CartEmptyException 예외 발생 => /WEB-INF/view/exception.jsp 로 제어 이동 -->
+ 		<value>
+ 			exception.CartEmptyException=exception
+ 			exception.LoginException=exception
+ 		</value>
+ 	</property>
+ </bean>
+ <!-- message 처리 설정 : messages.properties  : 기본 
+ 						 1.messages_ko_KR.properties : 지역코드 : ko_kr 
+ 						 2. 1번 파일이 없는 경우
+ 						 	messages.properties
+ 						 -->
+ <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+ 	<property name="basenames">
+ 		<list>
+ 			<value>
+ 				messages
+ 			</value>
+ 		</list>
  	</property>
  </bean>
  </beans>

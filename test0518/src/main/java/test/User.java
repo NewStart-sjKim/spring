@@ -1,7 +1,14 @@
 package test;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
 public class User {
+	@Value("hongkd")
 	private String id;
+	@Autowired
 	private Contact contact;
 
 	public User() {

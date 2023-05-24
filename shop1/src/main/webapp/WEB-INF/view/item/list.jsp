@@ -26,10 +26,10 @@
 		</td>
 		<td align="right">${item.price}</td>
 		<td align="center">${item.price}
-			<a href="update>id=${item.id}">수정</a>
+			<a href="update?id=${item.id}">수정</a>
 		</td>
 		<td align="right">${item.price}
-			<a href="update>id=${item.id}">삭제</a>
+			<a href="delete?id=${item.id}">삭제</a>
 		</td>
 	</tr>
 	</c:forEach>
