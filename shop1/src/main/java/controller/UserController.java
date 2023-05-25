@@ -216,19 +216,18 @@ public class UserController {
 	 * 	  실패 : 오류 메세지 출력. password 페이지 이동
 	 */
 	@PostMapping("password")
-	public String passUpdate(String password , String chgpass, HttpSession session) {
-		//비밀번호 검증
+	public String upDatePass(String password, String chgpass,HttpSession session) {
 		User loginUser = (User)session.getAttribute("loginUser");
-		if(!loginUser.getPassword().equals(password)) {
-			throw new LoginException("불일치","password?userid="+loginUser.getUserid());
+		if(!loginUser.getPassword().equals(password)){
+			throw new LoginException("비밀번호가 일치하지 않습니다.","password?userid="+loginUser.getUserid());
 		}
 		try {
-			service.passUpdate(loginUser.getUserid(),chgpass);
+			service.upDatePs(loginUser.getUserid(),chgpass);
 			loginUser.setPassword(chgpass);
-		}catch (Exception e){
+		}catch(Exception e) {
 			throw new LoginException
-			("오류발생 관리자 연락요망","password?userid=" + loginUser.getUserid());
+			("오류발생 관라자에게 연락하세요","password");
 		}
-		return "redirect:mypage?userid=" + loginUser.getUserid();
+		return "redirect:mypage?userid"+loginUser.getUserid();
 	}
 }

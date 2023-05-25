@@ -133,9 +133,11 @@ public class ShopService {
 		userDao.delete(userid);
 	}
 
-	public void passUpdate(String userid, String chgpass) {
+	public void upDatePs(String password, String userid) {
 		
-		userDao.chgpass(userid,chgpass);
+		userDao.update(password,userid);
 	}
+
+	
 	
 }

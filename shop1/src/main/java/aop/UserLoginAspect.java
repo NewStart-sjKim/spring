@@ -35,12 +35,13 @@ public class UserLoginAspect {
 			throw new LoginException("본인만 가능합니다.","../item/list");
 		}
 	}
-	@Before("execution(* controller.User*.passUpdate*(..)) && args(..,session)")
-	public void userPsCheck( HttpSession session) throws Throwable{
+	@Before("execution(* controller.User*.upDatePass*(..)) && args(..,session)")
+	public void userPsCheck(HttpSession session) throws Throwable{
 		User loginUser = (User)session.getAttribute("loginUser");
 		if(loginUser == null) {
 			throw new LoginException("[idCheck]회원만 가능합니다.","login");
 		}
+		
 	}
 	
 }

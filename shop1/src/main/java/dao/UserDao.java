@@ -52,16 +52,15 @@ public class UserDao {
 		String sql ="delete from useraccount where userid=:userid";
 		template.update(sql, param);
 	}
-
-	public void chgpass(String userid, String chgpass) {
+	public void update(String userid, String chgpass) {
 		param.clear();
-		param.put("userid", userid);
 		param.put("password", chgpass);
-		String sql ="update useraccount set password=:password where userid=:userid";
+		param.put("userid", userid);
+		String sql = "update useraccount set password=:password where userid=:userid";
 		template.update(sql, param);
 		
 	}
-		
+
 	
 	
 }
