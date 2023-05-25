@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -60,7 +61,17 @@ public class UserDao {
 		template.update(sql, param);
 		
 	}
-
-	
-	
+	public List<User> userlist() {
+		
+		return template.query("select * from useraccount", param,mapper);
+	}
+	//select * from useraccount where userid in ('admin','test1')
+	public List<User> list(String[] idchks) {
+		StringBuilder ids = new StringBuilder();
+		for(int i=0;i<idchks.length;i++) {
+			ids.append("'" + idchks[i] + ((i<idchks.length-1)?"',":"'"));
+		}
+		String sql = "select * from useraccount " + "where userid in (" + ids.toString()+ ")";
+		return template.query(sql,mapper);
+	}
 }

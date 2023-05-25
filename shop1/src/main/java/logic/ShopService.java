@@ -110,7 +110,7 @@ public class ShopService {
 	}
 
 	public List<Sale> salelist(String userid) {
-		List<Sale> list = saleDao.list(userid);//id 사용자가 주문 정복목록 
+		List<Sale> list = saleDao.list(userid);//id 사용자가 주문한 정보목록 
 		for(Sale sa : list) {
 			//saleitemlist : 한개의 주문에 해당하는 주문상품 목록
 			List<SaleItem> saleitemlist =saleItemDao.list(sa.getSaleid());
@@ -136,6 +136,16 @@ public class ShopService {
 	public void upDatePs(String password, String userid) {
 		
 		userDao.update(password,userid);
+	}
+
+	public List<User> userlist() {
+		
+		return userDao.userlist(); //회원목록
+	}
+
+	public List<User> getUserList(String[] idchks) {
+		
+		return userDao.list(idchks);
 	}
 
 	

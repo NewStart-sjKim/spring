@@ -228,6 +228,6 @@ public class UserController {
 			throw new LoginException
 			("오류발생 관라자에게 연락하세요","password");
 		}
-		return "redirect:mypage?userid"+loginUser.getUserid();
+		return "redirect:mypage?userid="+loginUser.getUserid();
 	}
 }
