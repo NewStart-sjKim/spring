@@ -2,7 +2,6 @@ package controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -12,12 +11,12 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import exception.LoginException;
-import logic.Cart;
 import logic.Sale;
 import logic.ShopService;
 import logic.User;
@@ -229,5 +228,55 @@ public class UserController {
 			("오류발생 관라자에게 연락하세요","password");
 		}
 		return "redirect:mypage?userid="+loginUser.getUserid();
+	}
+	//{url}search :지정되지 않음.*search 인 요청시 호출되는 메서드
+	@PostMapping("{url}search")
+	public ModelAndView search(User user, BindingResult bresult, @PathVariable String url) {
+		//@PathVariable : {url}의 이름을 매개변수로 전달.
+		// 요청 : idsearch : url <= "id"
+		// 요청 : pwsearch : url <= "pw"
+		ModelAndView mav = new ModelAndView();
+		String code = "error.userid.search";
+		String title = "아이디";
+		if(url.equals("pw")) { //비밀번호 검증인 경우
+			title = "비밀번호";
+			if(user.getUserid() == null || user.getUserid().trim().equals("")) {
+				//BindingResult.reject : global error
+				//		=> jsp의 <spring:hasBindErrors....부분에 오류출력
+				//BindingResult.rejectValue() :
+				//		=> jsp의 <forrm;errors path=... 부분에 오류 출력
+				bresult.rejectValue("userid","error.required"); //error.required.userid 오류코드
+			}
+		}
+		if(user.getEmail() == null || user.getEmail().trim().equals("")) {
+			bresult.rejectValue("email","error.required"); //error.required.email 오류코드
+		}
+		if(user.getPhoneno() == null || user.getPhoneno().trim().equals("")) {
+			bresult.rejectValue("phoneno","error.required");//error.required.phoneno 오류코드
+		}
+		if(bresult.hasErrors()) {
+			mav.getModel().putAll(bresult.getModel());
+			System.out.println(bresult.getModel());
+			return mav;
+		}
+		//입력검증 정상완료.
+		if(user.getUserid() != null && user.getUserid().trim().equals(""))
+			user.setUserid(null);
+		/*										result
+		 * user.getUserid() == null : 아이디찾기 => 아이디값 저장
+		 * user.getUserid() != null : 비밀번호찾기  => 비밀번호값 저장
+		 */
+		String result = null;
+		try {
+			result = service.getSearch(user);
+		} catch (EmptyResultDataAccessException e) {
+			bresult.reject(code);
+			mav.getModel().putAll(bresult.getModel());
+		return mav;
+		}
+		mav.addObject("result",result);
+		mav.addObject("title",title);
+		mav.setViewName("search");
+		return mav;
 	}
 }

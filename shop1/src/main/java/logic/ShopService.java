@@ -148,6 +148,11 @@ public class ShopService {
 		return userDao.list(idchks);
 	}
 
+	public String getSearch(User user) {
+		
+		return userDao.search(user);
+	}
+
 	
 	
 }
