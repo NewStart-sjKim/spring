@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import dao.BoardDao;
 import dao.ItemDao;
 import dao.SaleDao;
 import dao.SaleItemDao;
@@ -25,6 +26,8 @@ public class ShopService {
 	private SaleDao saleDao;
 	@Autowired
 	private SaleItemDao saleItemDao;
+	@Autowired
+	private BoardDao boardDao;
 	
 	public List<Item> itemList(){
 		return itemDao.list();
@@ -153,6 +156,32 @@ public class ShopService {
 		return userDao.search(user);
 	}
 
-	
-	
+	public void bardWrite( Board board, HttpServletRequest request) {
+		int maxnum = boardDao.maxNum(); //등록된 게시물의 최대 num값 리턴
+		board.setNum(++maxnum);
+		board.setGrp(maxnum);
+		if(board.getFile1() != null && !board.getFile1().isEmpty()) {
+			String path = request.getServletContext().getRealPath("/") + "board/file/";
+			this.uploadFileCreate(board.getFile1(), path);
+			board.setFileurl(board.getFile1().getOriginalFilename());
+		}
+		boardDao.insert(board);
+	}
+
+	public int boardcount(String boardid,String searchtype, String searchcontent) {
+		return boardDao.count(boardid,searchtype,searchcontent);
+	}
+
+	public List<Board> boardlist(Integer pageNum, int limit, String boardid,  String searchtype,String searchcontent) {
+		return boardDao.list(pageNum,limit,boardid,searchtype,searchcontent);
+	}
+
+	public Board getBoard(Integer num) {
+		
+		return boardDao.selectOne(num);
+	}
+	public void addReadcnt(Integer num) {
+		
+		boardDao.addReadcnt(num);
+	}
 }

@@ -23,6 +23,7 @@ public class UserDao {
 	private NamedParameterJdbcTemplate template;
 	private RowMapper<User> mapper = new BeanPropertyRowMapper<User>(User.class);
 	private Map<String,Object> param = new HashMap<>();
+	
 	@Autowired
 	public void setDataSource(DataSource dataSource) {
 		template = new NamedParameterJdbcTemplate(dataSource);
