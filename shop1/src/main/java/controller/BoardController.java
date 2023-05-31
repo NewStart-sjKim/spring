@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import exception.LoginException;
 import logic.Board;
 import logic.ShopService;
 
@@ -50,7 +51,7 @@ public class BoardController {
 		if(boardid == null) boardid="1";
 		request.getSession().setAttribute("boardid", boardid);
 		board.setBoardid(boardid);
-		service.bardWrite(board,request);
+		service.boardWrite(board,request);
 		mav.setViewName("redirect:list?boardid="+boardid);
 		return mav;
 	}
@@ -72,14 +73,6 @@ public class BoardController {
 		String boardid = param.get("boardid");
 		String searchtype = param.get("searchtype");
 		String searchcontent = param.get("searchcontent");
-		if(searchtype == null || searchtype.trim().equals("")) {
-			searchtype = null;
-			searchcontent = null;
-		}
-		if(searchcontent == null || searchcontent.trim().equals("")) {
-			searchtype = null;
-			searchcontent = null;
-		}
 		ModelAndView mav = new ModelAndView();
 		if(pageNum == null || pageNum.toString().equals("")) {
 			pageNum = 1;
@@ -88,7 +81,12 @@ public class BoardController {
 			boardid = "1";
 		}
 		session.setAttribute("boardid",boardid);
-		String boardName = null;
+		if(searchtype == null ||  searchcontent == null || 
+				   searchtype.trim().equals("") ||  searchcontent.trim().equals("")) {
+					searchtype = null;
+					searchcontent = null;
+				}
+		String boardName=null;
 		switch(boardid) {
 		case "1" : boardName = "공지사항"; break;
 		case "2" : boardName = "자유게시판"; break;
@@ -131,4 +129,65 @@ public class BoardController {
 			mav.addObject("boardName","QNA");
 		return mav;
 	}
+	@GetMapping("reply")
+	public ModelAndView getBoard(Integer num,HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		String boardid = (String)session.getAttribute("boardid");
+		Board board = service.getBoard(num); 
+		mav.addObject("board",board);
+		if(boardid == null || boardid.equals("1"))
+			mav.addObject("boardName","공지시항");
+		else if(boardid.equals("2"))
+			mav.addObject("boardName","자유게시판");
+		else if(boardid.equals("3"))
+			mav.addObject("boardName","QNA");
+		return mav;
+	}
+	/*
+	 * 1. 유효성 검사하기 - 파라미터값 저장.
+	 * 		- 원글정보 : num,grp,grplevel,grpstep,boardid
+	 * 		- 답글정보 : writer,pass,subject,content
+	 * 2. db에 insert => service.boardReply()
+	 * 		- 원글의 grpstep 보다 큰 이미 등록된 답글의 grpstep 값을 +1
+	 * 			=> boardDao.grpStepAdd()
+	 * 		- num : maxNum() + 1
+	 * 		- db에 insert => boardDao.insert()
+	 * 		  grp : 원글과 동일
+	 * 		  grplevel : 원들의 grplevel + 1
+	 * 		  grpstep : 원글의 grpstep + 1
+	 * 3. 등록 성공 : list로 페이지 이동
+	 * 	  등록 실패 : "답변 등록시 오류 발생 "reply 페이지 이동
+	 */
+	@PostMapping("reply")
+	public ModelAndView reply( @Valid Board board, BindingResult bresult) {
+		ModelAndView mav = new ModelAndView(); 
+		//유효성 검사
+		if(bresult.hasErrors()) {
+			Board dbboard = service.getBoard(board.getNum()); //원글 정보를 db에서 읽기
+			Map<String,Object> map = bresult.getModel();
+			Board b = (Board)map.get("board"); //화면에서 입력받은 값을 저장한 Board 객체
+			b.setTitle(dbboard.getTitle());//원글의 제목으로 변경
+			mav.getModel().putAll(bresult.getModel());
+			return mav;
+		}
+			  try {
+			  	service.boardReply(board);
+			  	mav.setViewName("redirect:list?boardid="+board.getBoardid());
+			  } catch(Exception e){
+			  		e.printStackTrace();
+			  		throw new LoginException("답변등록시 오류 발생", "reply>num="+board.getNum());
+			 
+			  }
+			  return mav;
+	}
+			  /*
+		String  boardid = (String)request.getSession().getAttribute("boardid");
+		if(boardid == null) boardid="1";
+		request.getSession().setAttribute("boardid", boardid);
+		board.setBoardid(boardid);
+		service.boardReply(board,num);
+		mav.setViewName("redirect:list?boardid="+boardid);
+		return mav;
+	}
+		*/
 }

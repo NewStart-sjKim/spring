@@ -29,7 +29,7 @@ public class BoardDao {
 	}
 	public int maxNum() {
 		
-		return template.queryForObject("select ifnull(max(num),0) from board" ,param,Integer.class);
+		return template.queryForObject("select ifnull(max(num),0) from board1" ,param,Integer.class);
 	}
 	public void insert(Board board) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(board);
@@ -74,4 +74,14 @@ public class BoardDao {
 				+ " where num=:num";
 		template.update(sql, param);
 	}
+	public void updateGrpStep(Board board) {
+		String sql = "update board set grpstep=grpstep + 1" 
+	               + " where grp = :grp and grpstep > :grpstep";
+		param.clear();
+		param.put("grp", board.getGrp());         //원글의 grp
+		param.put("grpstep", board.getGrpstep()); //원글의 grpstep
+		template.update(sql, param);
+	}
+	
+	
 }

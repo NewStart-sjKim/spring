@@ -8,6 +8,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import dao.BoardDao;
@@ -156,7 +157,7 @@ public class ShopService {
 		return userDao.search(user);
 	}
 
-	public void bardWrite( Board board, HttpServletRequest request) {
+	public void boardWrite( Board board, HttpServletRequest request) {
 		int maxnum = boardDao.maxNum(); //등록된 게시물의 최대 num값 리턴
 		board.setNum(++maxnum);
 		board.setGrp(maxnum);
@@ -183,5 +184,24 @@ public class ShopService {
 	public void addReadcnt(Integer num) {
 		
 		boardDao.addReadcnt(num);
+	}
+	@Transactional // 트렌젝션 처리함. 업무를 원자화(all or nothing)
+	public void boardReply(Board board) {
+//		int maxnum = boardDao.maxNum();
+//		Board b = boardDao.selectOne(num);
+//		boardDao.grpStepAdd(b.getGrp(),b.getGrpstep());
+//		board.setNum(maxnum+1);
+//		board.setGrp(b.getGrp());
+//		board.setGrplevel(b.getGrplevel()+1);
+//		board.setGrpstep(b.getGrpstep()+1);
+//		boardDao.insert(board);
+		boardDao.updateGrpStep(board);  //이미 등록된 grpstep값 1씩 증가
+		int max = boardDao.maxNum();    //최대 num 조회
+		board.setNum(++max);  //원글의 num => 답변글의 num 값으로 변경
+		                      //원글의 grp => 답변글의 grp 값을 동일. 설정 필요 없음
+                              //원글의 boardid => 답변글의 boardid 값을 동일. 설정 필요 없음
+		board.setGrplevel(board.getGrplevel() + 1); //원글의 grplevel => +1 답변글의 grplevel 설정
+		board.setGrpstep(board.getGrpstep() + 1);   //원글의 grpstep => +1 답변글의 grpstep 설정
+		boardDao.insert(board);
 	}
 }

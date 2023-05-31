@@ -35,7 +35,7 @@
 	</tr>
 	<tr>
 		<td>제목</td>
-		<td class="leftcol">${board.writer}</td>
+		<td class="leftcol">${board.title}</td>
 	</tr>
 	<tr>
 		<td>내용</td>
