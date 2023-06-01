@@ -38,8 +38,8 @@
 </head>
 <body>
 <p><div id="chatStatus"></div>
-	<textarea name="chatMsg" rows="15" cols="40"></textarea><br>
-	메세지입력:<input type="text" name="chatInput">
+	<textarea name="chatMsg" rows="15" cols="40" class="w3-input"></textarea><br>
+	메세지입력:<input type="text" name="chatInput" class="w3-input">
 
 </body>
 </html>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -29,7 +30,7 @@ public class BoardDao {
 	}
 	public int maxNum() {
 		
-		return template.queryForObject("select ifnull(max(num),0) from board1" ,param,Integer.class);
+		return template.queryForObject("select ifnull(max(num),0) from board" ,param,Integer.class);
 	}
 	public void insert(Board board) {
 		SqlParameterSource param = new BeanPropertySqlParameterSource(board);
@@ -82,6 +83,13 @@ public class BoardDao {
 		param.put("grpstep", board.getGrpstep()); //원글의 grpstep
 		template.update(sql, param);
 	}
-	
-	
+	public void update(Board board) {
+		String sql = " update board set writer=:writer, title=:title, content=:content,"
+				+ " file1=:fileurl where num=:num";
+		SqlParameterSource param = new BeanPropertySqlParameterSource(board);
+		template.update(sql,param);
+	}
+	public void delete(Integer num) {
+		template.update("delete from board where num="+num,param);
+	}
 }

@@ -50,7 +50,7 @@
 			</td>
 		</tr>
 		<script>
-			CKEDITOR.replace("content",{filebrowserImageUploadUrl :"imgupload" })
+			CKEDITOR.replace("content",{filebrowserImageUploadUrl :"imgupload" });
 		</script>
 		<tr>
 			<th>첨부파일</th>

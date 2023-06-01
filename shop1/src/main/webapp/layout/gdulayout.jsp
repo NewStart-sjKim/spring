@@ -180,8 +180,25 @@ html, body, h1, h2, h3, h4, h5 {
 				Powered by <a href="https://www.w3schools.com/w3css/default.asp"
 					target="_blank">w3.css</a>
 			</p>
+			 <hr>
+	    <div>
+	    	<span id="si">
+	    		<select name="si" onchange="getText('si')">
+	    			<option value=""> 시도를 선택하세요</option>
+	    		</select>
+	    	</span>
+	    	<span id="gu">
+	    		<select name="gu" onchange="getText('gu')">
+	    			<option value=""> 구군를 선택하세요</option>
+	    		</select>
+	    	</span>
+	    	<span id="dong">
+	    		<select name="dong">
+	    			<option value=""> 동리를 선택하세요</option>
+	    		</select>
+	    	</span>
+	    </div>
 		</footer>
-
 		<!-- End page content -->
 	</div>
 
@@ -209,6 +226,76 @@ html, body, h1, h2, h3, h4, h5 {
 			overlayBg.style.display = "none";
 		}
 	</script>
-
+<script type="text/javascript">
+	$(function(){
+		getSido()
+		getText(name)
+	})
+	function getSido(){ //서버에서 리스트객체를 배열로 직접 전달 받음
+		$.ajax({
+			url : "${path}/ajax/select",
+			success : function(arr){
+				//arr : 서버에서 전달 받는 리스트 객체를 배열로 인식함
+				console.log(arr)
+				$.each(arr,function(i,item){
+					// i : 인덱스. 첨자. 0부터 시작
+					// item : 배열의 요소
+					$("select[name=si]").append(function(){
+						return "<option>"+item+"</option>"
+					})
+				})
+			}
+		})
+	}
+	function getSido2(){ //서버에서 문자열로 전달 받기
+		$.ajax({
+			url : "${path}/ajax/select2",
+			success : function(data){ // data : [서울특별시, .... 제주특별자치도], 문자열
+				console.log(data)
+				//arr : 배열객체
+				let arr = data.substring(data.indexOf('[')+1, data.indexOf(']')).split(",");
+				$.each(arr,function(i,item){
+					$("select[name=si]").append(function(){
+						return "<option>"+item+"</option>"
+					})
+				})
+			}
+		})
+	}
+	function getText(name){//si : 시도 선택, gu : 구군 선택
+		let city = $("select[name='si']").val()
+		let gun = $("select[name='gu']").val()
+		let disname;
+		let toptext='구군을 선택하세요'
+		let params = ''
+		if(name == 'si'){
+			params = "si=" + city.trim()
+			disname = "gu"
+		} else if (name == 'gu'){
+			params = "si=" + city.trim() + "&gu=" + gun.trim()
+			disname = "dong"
+			toptext = '동리를 선택하세요'
+		} else {
+			return
+		}
+		$.ajax({
+			url : "${path}/ajax/select",
+			type : "POST",
+			
+			data : params,
+			success : function(arr){
+				$("select[name=" + disname + "] option").remove()
+				$("select[name=" + disname + "]").append(function(){
+					return "<option value=''>" + toptext + "</option>"
+				})
+				$.each(arr,function(i,item){
+					$("select[name=" + disname + "]").append(function(){
+						return "<option>" + item + "</option>"
+					})
+				})
+			}
+		})
+	}
+</script>
 </body>
 </html>
