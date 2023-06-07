@@ -178,6 +178,13 @@
     <version>2.13.4</version>
 </dependency>
 
+<!-- jsoup 설정-->
+  	<dependency>
+  		<groupId>org.jsoup</groupId>
+  		<artifactId>jsoup</artifactId>
+  		<version>1.15.4</version>
+  	</dependency>
+  	
   </dependencies>
   <build>
     <finalName>shop1</finalName>

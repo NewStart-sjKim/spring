@@ -251,6 +251,7 @@ public class BoardController {
 		}
 		return mav;
 	}
+	
 	@RequestMapping("imgupload")
 	public String imgupload(MultipartFile upload, String CKEditorFuncNum, 
 										HttpServletRequest request, Model model) {
